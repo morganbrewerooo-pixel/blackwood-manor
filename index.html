@@ -4,155 +4,340 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Blackwood Manor | Confidential Invitation</title>
+<title>Blackwood Manor — Confidential Letter</title>
 <style>
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(ellipse at center, #302326, #0c0b0d);
-  color: #e5d2aa;
+  background: radial-gradient(ellipse at center,
+    #38252d, #100d12 75%);
+  color: #e5cda3;
   font-family: Georgia, serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 25px 12px;
 }
-main { width: 100%; max-width: 440px; text-align: center; }
-h1 { font-size: 27px; letter-spacing: 4px; font-weight: normal; }
-.subtitle { font-size: 11px; letter-spacing: 3px; color: #ad9475; }
-.envelope {
+main {
+  max-width: 480px;
+  margin: auto;
+  padding: 38px 16px 90px;
+  text-align: center;
+}
+h1 {
+  font-size: clamp(24px, 7vw, 34px);
+  letter-spacing: 4px;
+  font-weight: normal;
+}
+.subtitle {
+  color: #bca37c;
+  font-size: 11px;
+  letter-spacing: 2px;
+  line-height: 1.8;
+}
+.scene {
+  height: 365px;
   position: relative;
+  margin: 25px auto 0;
+  max-width: 330px;
+}
+.envelope {
+  position: absolute;
+  bottom: 45px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 300px;
-  height: 195px;
-  margin: 75px auto 25px;
-  background: #221b21;
-  border: 2px solid #8e7145;
-  box-shadow: 0 20px 45px #0009;
-  cursor: pointer;
-  perspective: 800px;
+  height: 190px;
+  filter: drop-shadow(0 20px 20px #0008);
+}
+.back {
+  position: absolute;
+  inset: 0;
+  background: #271c24;
+  border: 2px solid #98764e;
 }
 .flap {
   position: absolute;
   inset: 0;
-  background: #423038;
+  background: #493039;
   clip-path: polygon(0 0, 100% 0, 50% 65%);
-  transform-origin: top;
-  transition: transform 1s;
-  z-index: 3;
+  transform-origin: top center;
+  transition: transform 1s ease;
+  z-index: 5;
 }
 .front {
   position: absolute;
   inset: 0;
-  background: #30242d;
-  clip-path: polygon(0 0, 50% 53%, 100% 0, 100% 100%, 0 100%);
-  z-index: 2;
+  background: #392832;
+  clip-path: polygon(0 0, 50% 58%, 100% 0,
+    100% 100%, 0 100%);
+  z-index: 4;
   pointer-events: none;
+  border-bottom: 2px solid #98764e;
 }
 .seal {
   position: absolute;
+  top: 45%;
   left: 50%;
-  top: 50%;
   transform: translate(-50%, -50%);
-  width: 65px;
-  height: 65px;
+  z-index: 6;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 25%, #b0444a, #570c1d);
-  border: 3px double #d8a56b;
-  display: grid;
-  place-items: center;
-  color: #e9c78e;
-  font-size: 29px;
-  z-index: 4;
+  width: 70px;
+  height: 70px;
+  border: 3px double #e0b77d;
+  background: radial-gradient(circle at 30% 25%,
+    #b64b56, #650e23 70%);
+  color: #f5d6a2;
+  font: 30px Georgia, serif;
+  cursor: pointer;
+  box-shadow: 0 4px 12px #0008;
   transition: opacity .4s;
 }
-.envelope.open .flap { transform: rotateX(180deg); z-index: 0; }
-.envelope.open .seal { opacity: 0; pointer-events: none; }
-.hint { font-size: 12px; letter-spacing: 2px; }
+.paper {
+  position: absolute;
+  left: 24px;
+  bottom: 14px;
+  width: 252px;
+  height: 160px;
+  background: linear-gradient(130deg,
+    #f2e4c5, #cdb58d);
+  border: 4px double #a08455;
+  z-index: 3;
+  color: #493225;
+  padding: 20px 12px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  transition: transform .6s ease;
+  box-shadow: 0 0 15px #0005;
+}
+.paper:active { cursor: grabbing; }
+.paper strong {
+  display: block;
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+.paper span {
+  display: block;
+  margin-top: 12px;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+.envelope.open .flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+.envelope.open .seal {
+  opacity: 0;
+  pointer-events: none;
+}
+.envelope.open .paper { z-index: 3; }
+.envelope.pulled .paper {
+  transform: translateY(-165px);
+}
+.hint {
+  font-size: 12px;
+  letter-spacing: 2px;
+  min-height: 20px;
+  color: #e3c69b;
+}
 .letter {
   display: none;
   margin: 25px auto;
-  padding: 28px 23px;
+  padding: 30px 22px;
+  background: linear-gradient(135deg,
+    #f1e2c2, #d6bf99);
+  color: #30221d;
   text-align: left;
-  background: #e8d7b5;
-  color: #30221c;
-  border: 6px double #94784e;
-  box-shadow: 0 15px 45px #0009;
-  animation: reveal 1.4s ease both;
+  border: 7px double #97784b;
+  box-shadow: 0 18px 45px #0009;
+  animation: unfold 1s ease both;
 }
 .letter.show { display: block; }
-.letter h2 { text-align: center; font-size: 22px; }
-.letter h3 { font-size: 16px; border-bottom: 1px solid #94784e; }
-.letter p { line-height: 1.7; font-size: 15px; }
-.stamp { text-align: center; color: #8c2531; letter-spacing: 2px; }
-@keyframes reveal {
-  from { opacity: 0; transform: translateY(-65px) scale(.9); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+.letter h2 {
+  text-align: center;
+  font-size: 25px;
+}
+.letter h3 {
+  border-bottom: 1px solid #a88b62;
+  padding-bottom: 7px;
+  margin-top: 25px;
+  font-size: 17px;
+}
+.letter p {
+  font-size: 15px;
+  line-height: 1.8;
+}
+.stamp {
+  text-align: center;
+  color: #8a2330;
+  letter-spacing: 2px;
+  font-size: 12px;
+}
+@keyframes unfold {
+  from {
+    opacity: 0;
+    transform: scaleY(.25) translateY(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
+}
+@media (max-width: 350px) {
+  .scene { transform: scale(.88); }
 }
 </style>
 </head>
 <body>
 <main>
-  <div class="subtitle">YOU ARE CORDIALLY SUMMONED TO</div>
-  <h1>BLACKWOOD MANOR</h1>
-  <div class="subtitle">A NIGHT OF SECRETS & DECEPTION</div>
-
-  <div class="envelope" id="envelope" role="button"
-       tabindex="0" aria-label="Open sealed invitation">
-    <div class="flap"></div>
-    <div class="front"></div>
-    <div class="seal">B</div>
+  <div class="subtitle">
+    YOU ARE CORDIALLY SUMMONED TO
   </div>
-  <p class="hint" id="hint">TAP THE SEAL TO BREAK IT</p>
+  <h1>BLACKWOOD MANOR</h1>
+  <div class="subtitle">
+    A NIGHT OF SECRETS & DECEPTION
+  </div>
+
+  <div class="scene">
+    <div class="envelope" id="envelope">
+      <div class="back"></div>
+      <div class="flap"></div>
+
+      <div class="paper" id="paper"
+           role="button" tabindex="0"
+           aria-label="Pull out your letter">
+        <strong>CONFIDENTIAL</strong>
+        <span>PRIVATE CORRESPONDENCE</span>
+        <span>BLACKWOOD MANOR</span>
+      </div>
+
+      <div class="front"></div>
+      <button class="seal" id="seal"
+              aria-label="Break wax seal">B</button>
+    </div>
+  </div>
+
+  <p class="hint" id="hint">
+    TAP THE WAX SEAL
+  </p>
 
   <article class="letter" id="letter">
     <div class="stamp">STRICTLY CONFIDENTIAL</div>
-    <h2>Edward Whitlock</h2>
-    <p style="text-align:center"><i>Victor's Estranged Younger Brother</i></p>
 
-    <h3>Your Public Identity</h3>
-    <p>You have not spoken to Victor in nearly fifteen years.
-    Your unexpected invitation to Blackwood Manor has raised eyebrows.</p>
+    <h2>Edward Whitlock</h2>
+    <p style="text-align:center">
+      <i>Victor's Estranged Younger Brother</i>
+    </p>
 
     <h3>Your Personality</h3>
-    <p>Bitter, sarcastic, intelligent, and manipulative.</p>
+    <p>Bitter, sarcastic, intelligent,
+    and manipulative.</p>
+
+    <h3>Your Public Story</h3>
+    <p>You have not spoken to Victor in nearly
+    fifteen years. You unexpectedly received
+    an invitation to Blackwood Manor.</p>
 
     <h3>Your Secret</h3>
-    <p>You recently discovered that Victor stole your father's
-    inheritance decades ago.</p>
+    <p>You recently discovered that Victor
+    stole your father's inheritance
+    decades ago.</p>
 
     <h3>Your Motive</h3>
-    <p>You believe half of Victor's fortune rightfully belongs to you.</p>
+    <p>You believe half of Victor's fortune
+    rightfully belongs to you.</p>
 
     <h3>What You Know</h3>
-    <p>You overheard Victor arguing with someone about missing
-    company funds, but could not identify the other person.</p>
+    <p>You overheard Victor arguing with
+    someone about missing company funds,
+    but could not identify who.</p>
 
     <h3>Why You're Suspicious</h3>
-    <p>You were seen leaving Victor's study shortly before dinner,
-    carrying an envelope you refuse to explain.</p>
+    <p>You were seen leaving Victor's study
+    shortly before dinner, carrying an
+    envelope you refuse to explain.</p>
 
     <p class="stamp">TRUST NO ONE.</p>
   </article>
 </main>
+
 <script>
 const envelope = document.getElementById("envelope");
+const seal = document.getElementById("seal");
+const paper = document.getElementById("paper");
 const letter = document.getElementById("letter");
 const hint = document.getElementById("hint");
-function openLetter() {
-  if (envelope.classList.contains("open")) return;
+
+let opened = false;
+let pulled = false;
+let startY = 0;
+let dragging = false;
+let offset = 0;
+
+seal.addEventListener("click", () => {
+  if (opened) return;
+  opened = true;
   envelope.classList.add("open");
+  hint.textContent = "SWIPE THE LETTER UPWARD";
+});
+
+function reveal() {
+  if (!opened || pulled) return;
+  pulled = true;
+  dragging = false;
+  paper.style.transition = "transform .6s ease";
+  paper.style.transform = "";
+  envelope.classList.add("pulled");
   hint.textContent = "YOUR SECRET HAS BEEN REVEALED";
+
   setTimeout(() => {
     letter.classList.add("show");
-    letter.scrollIntoView({behavior:"smooth", block:"start"});
-  }, 900);
+    letter.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }, 750);
 }
-envelope.addEventListener("click", openLetter);
-envelope.addEventListener("keydown", e => {
-  if (e.key === "Enter" || e.key === " ") {
+
+paper.addEventListener("pointerdown", e => {
+  if (!opened || pulled) return;
+  dragging = true;
+  startY = e.clientY;
+  offset = 0;
+  paper.style.transition = "none";
+  paper.setPointerCapture(e.pointerId);
+});
+
+paper.addEventListener("pointermove", e => {
+  if (!dragging) return;
+  offset = Math.max(-170,
+    Math.min(0, e.clientY - startY));
+  paper.style.transform =
+    `translateY(${offset}px)`;
+});
+
+paper.addEventListener("pointerup", () => {
+  if (!dragging) return;
+  dragging = false;
+
+  if (offset < -65) {
+    reveal();
+  } else {
+    paper.style.transition = "transform .3s";
+    paper.style.transform = "translateY(0)";
+  }
+});
+
+paper.addEventListener("pointercancel", () => {
+  if (!dragging) return;
+  dragging = false;
+  paper.style.transition = "transform .3s";
+  paper.style.transform = "translateY(0)";
+});
+
+paper.addEventListener("keydown", e => {
+  if ((e.key === "Enter" || e.key === " ") && opened) {
     e.preventDefault();
-    openLetter();
+    reveal();
   }
 });
 </script>
