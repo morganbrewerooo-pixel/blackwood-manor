@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blackwood Manor | Confidential Invitation</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at center, #302326, #0c0b0d);
+  color: #e5d2aa;
+  font-family: Georgia, serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px 12px;
+}
+main { width: 100%; max-width: 440px; text-align: center; }
+h1 { font-size: 27px; letter-spacing: 4px; font-weight: normal; }
+.subtitle { font-size: 11px; letter-spacing: 3px; color: #ad9475; }
+.envelope {
+  position: relative;
+  width: 300px;
+  height: 195px;
+  margin: 75px auto 25px;
+  background: #221b21;
+  border: 2px solid #8e7145;
+  box-shadow: 0 20px 45px #0009;
+  cursor: pointer;
+  perspective: 800px;
+}
+.flap {
+  position: absolute;
+  inset: 0;
+  background: #423038;
+  clip-path: polygon(0 0, 100% 0, 50% 65%);
+  transform-origin: top;
+  transition: transform 1s;
+  z-index: 3;
+}
+.front {
+  position: absolute;
+  inset: 0;
+  background: #30242d;
+  clip-path: polygon(0 0, 50% 53%, 100% 0, 100% 100%, 0 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+.seal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, #b0444a, #570c1d);
+  border: 3px double #d8a56b;
+  display: grid;
+  place-items: center;
+  color: #e9c78e;
+  font-size: 29px;
+  z-index: 4;
+  transition: opacity .4s;
+}
+.envelope.open .flap { transform: rotateX(180deg); z-index: 0; }
+.envelope.open .seal { opacity: 0; pointer-events: none; }
+.hint { font-size: 12px; letter-spacing: 2px; }
+.letter {
+  display: none;
+  margin: 25px auto;
+  padding: 28px 23px;
+  text-align: left;
+  background: #e8d7b5;
+  color: #30221c;
+  border: 6px double #94784e;
+  box-shadow: 0 15px 45px #0009;
+  animation: reveal 1.4s ease both;
+}
+.letter.show { display: block; }
+.letter h2 { text-align: center; font-size: 22px; }
+.letter h3 { font-size: 16px; border-bottom: 1px solid #94784e; }
+.letter p { line-height: 1.7; font-size: 15px; }
+.stamp { text-align: center; color: #8c2531; letter-spacing: 2px; }
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(-65px) scale(.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+</style>
+</head>
+<body>
+<main>
+  <div class="subtitle">YOU ARE CORDIALLY SUMMONED TO</div>
+  <h1>BLACKWOOD MANOR</h1>
+  <div class="subtitle">A NIGHT OF SECRETS & DECEPTION</div>
+
+  <div class="envelope" id="envelope" role="button"
+       tabindex="0" aria-label="Open sealed invitation">
+    <div class="flap"></div>
+    <div class="front"></div>
+    <div class="seal">B</div>
+  </div>
+  <p class="hint" id="hint">TAP THE SEAL TO BREAK IT</p>
+
+  <article class="letter" id="letter">
+    <div class="stamp">STRICTLY CONFIDENTIAL</div>
+    <h2>Edward Whitlock</h2>
+    <p style="text-align:center"><i>Victor's Estranged Younger Brother</i></p>
+
+    <h3>Your Public Identity</h3>
+    <p>You have not spoken to Victor in nearly fifteen years.
+    Your unexpected invitation to Blackwood Manor has raised eyebrows.</p>
+
+    <h3>Your Personality</h3>
+    <p>Bitter, sarcastic, intelligent, and manipulative.</p>
+
+    <h3>Your Secret</h3>
+    <p>You recently discovered that Victor stole your father's
+    inheritance decades ago.</p>
+
+    <h3>Your Motive</h3>
+    <p>You believe half of Victor's fortune rightfully belongs to you.</p>
+
+    <h3>What You Know</h3>
+    <p>You overheard Victor arguing with someone about missing
+    company funds, but could not identify the other person.</p>
+
+    <h3>Why You're Suspicious</h3>
+    <p>You were seen leaving Victor's study shortly before dinner,
+    carrying an envelope you refuse to explain.</p>
+
+    <p class="stamp">TRUST NO ONE.</p>
+  </article>
+</main>
+<script>
+const envelope = document.getElementById("envelope");
+const letter = document.getElementById("letter");
+const hint = document.getElementById("hint");
+function openLetter() {
+  if (envelope.classList.contains("open")) return;
+  envelope.classList.add("open");
+  hint.textContent = "YOUR SECRET HAS BEEN REVEALED";
+  setTimeout(() => {
+    letter.classList.add("show");
+    letter.scrollIntoView({behavior:"smooth", block:"start"});
+  }, 900);
+}
+envelope.addEventListener("click", openLetter);
+envelope.addEventListener("keydown", e => {
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    openLetter();
+  }
+});
+</script>
+</body>
+</html>
